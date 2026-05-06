@@ -1,8 +1,9 @@
 {
   "name": "rootsapiens-website",
   "version": "1.0.0",
+  "homepage": "https://rootsapiens.com",
   "description": "",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
