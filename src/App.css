@@ -2,16 +2,51 @@
   min-height: 100vh;
 }
 
+/* Breach Banner */
+.breach-banner {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  height: 30px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1100;
+}
+
+.banner-scroll {
+  display: flex;
+  white-space: nowrap;
+  animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 /* Navbar */
 .navbar {
   position: fixed;
-  top: 0;
+  top: 30px;
   left: 0;
   right: 0;
   z-index: 1000;
   padding: 1.5rem 0;
   background: linear-gradient(to bottom, rgba(10, 10, 10, 0.8) 0%, transparent 100%);
   backdrop-filter: blur(5px);
+  transition: var(--transition-smooth);
+}
+
+.navbar.open {
+  background: var(--color-bg);
+  height: 100vh;
 }
 
 .nav-content {
@@ -45,14 +80,12 @@
   color: var(--color-primary);
 }
 
-/* Hero Section */
+/* Hero */
 .hero {
-  position: relative;
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  position: relative;
   overflow: hidden;
 }
 
@@ -62,10 +95,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('./assets/rootsapiens_bg_hero.png');
+  background-image: url('/assets/rootsapiens_bg_hero.png');
   background-size: cover;
   background-position: center;
-  z-index: -1;
+  z-index: 1;
 }
 
 .overlay {
@@ -74,7 +107,31 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, transparent 0%, var(--color-bg) 90%);
+  background: radial-gradient(circle, transparent 0%, rgba(10, 10, 10, 0.8) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+/* Video Top Section */
+.video-top-section {
+  padding-top: 100px; /* Space for navbar */
+  padding-bottom: 2rem;
+  background: var(--color-bg);
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid rgba(245, 197, 24, 0.3);
+  box-shadow: 0 0 50px rgba(245, 197, 24, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #000;
 }
 
 .hero-title {
@@ -168,7 +225,7 @@
 
 .image-frame {
   height: 500px;
-  background: url('./assets/rootsapiens_bg_hero.png');
+  background: url('/assets/rootsapiens_bg_hero.png');
   background-size: cover;
   border: 1px solid var(--color-primary);
   position: relative;
@@ -178,6 +235,57 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(45deg, rgba(245, 197, 24, 0.1), transparent);
+}
+
+/* Issue Preview */
+.issue-preview {
+  background: linear-gradient(to bottom, #0d0d0d, var(--color-bg));
+  overflow: hidden;
+}
+
+.preview-container {
+  width: 100%;
+  padding: 4rem 0;
+  cursor: grab;
+}
+
+.preview-container:active {
+  cursor: grabbing;
+}
+
+.preview-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+}
+
+.preview-page {
+  width: 350px;
+  height: 500px;
+  background: #1a1a1a;
+  border: 1px solid rgba(245, 197, 24, 0.2);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: var(--transition-smooth);
+}
+
+.preview-page:hover {
+  border-color: var(--color-primary);
+  transform: scale(1.02);
+}
+
+.preview-page img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mt-4 {
+  margin-top: 3rem;
+}
+
+.text-center {
+  text-align: center;
 }
 
 /* Characters */
@@ -253,6 +361,26 @@
   color: var(--color-text-dim);
 }
 
+/* Mobile Menu */
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  height: calc(100vh - 100px);
+}
+
+.mobile-menu a {
+  font-size: 2rem;
+  font-family: var(--font-heading);
+}
+
+.menu-toggle {
+  color: var(--color-primary);
+  z-index: 1100;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .story-grid {
@@ -264,6 +392,11 @@
   }
   
   .hero-title {
-    font-size: 5rem;
+    font-size: 4rem;
+  }
+  
+  .section-padding {
+    padding: 4rem 0;
   }
 }
+
