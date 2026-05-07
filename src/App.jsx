@@ -199,12 +199,16 @@ function App() {
           <div className="preview-container">
             <motion.div 
               drag="x"
-              dragConstraints={{ right: 0, left: -800 }}
+              dragConstraints={{ right: 0, left: -1000 }}
               className="preview-track"
             >
-              {[1, 2, 1, 2].map((num, i) => (
+              {[
+                '/assets/999F3EE3-FD66-4EBA-9349-63C5B21A5E11.png',
+                '/assets/D7CBB2B5-0EDA-482B-8A77-3AA5C2F9F0C8.png',
+                '/assets/E7093256-D985-4A12-8331-C3301286DBC1.png'
+              ].map((img, i) => (
                 <div key={i} className="preview-page">
-                  <img src={`/assets/preview_${num}.png`} alt={`Page ${i + 1}`} />
+                  <img src={img} alt={`Preview Page ${i + 1}`} />
                 </div>
               ))}
             </motion.div>
