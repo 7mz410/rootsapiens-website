@@ -221,9 +221,9 @@ function App() {
           <h2 className="section-title text-center">The Survivors</h2>
           <div className="character-grid">
             {[
-              { name: 'N', role: 'Specialist', desc: 'The silent observer of the protocol.', img: '/assets/kira_portrait.png' },
+              { name: 'N', role: 'Specialist', desc: 'The silent observer of the protocol.', img: '/assets/n_portrait.png' },
               { name: 'Kira', role: 'Lead Scientist', desc: 'The woman who unlocked the earth\'s voice.', img: '/assets/kira_portrait.png' },
-              { name: 'T. Thomas', role: 'Security', desc: 'The last line of defense in Eden City.', img: '/assets/kira_portrait.png' }
+              { name: 'T. Thomas', role: 'Security', desc: 'The last line of defense in Eden City.', img: '/assets/thomas_portrait.png' }
             ].map((char, i) => (
               <motion.div 
                 key={char.name}
