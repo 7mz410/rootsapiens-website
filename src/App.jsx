@@ -202,10 +202,10 @@ function App() {
               dragConstraints={{ right: 0, left: -1000 }}
               className="preview-track"
             >
-              {[
-                '/assets/999F3EE3-FD66-4EBA-9349-63C5B21A5E11.png',
-                '/assets/D7CBB2B5-0EDA-482B-8A77-3AA5C2F9F0C8.png',
-                '/assets/E7093256-D985-4A12-8331-C3301286DBC1.png'
+              [
+                '/assets/preview_1.jpg',
+                '/assets/preview_2.jpg',
+                '/assets/preview_3.jpg'
               ].map((img, i) => (
                 <div key={i} className="preview-page">
                   <img src={img} alt={`Preview Page ${i + 1}`} />
@@ -225,9 +225,9 @@ function App() {
           <h2 className="section-title text-center">The Survivors</h2>
           <div className="character-grid">
             {[
-              { name: 'N', role: 'Specialist', desc: 'The silent observer of the protocol.', img: '/assets/n_portrait.png' },
-              { name: 'Kira', role: 'Lead Scientist', desc: 'The woman who unlocked the earth\'s voice.', img: '/assets/kira_portrait.png' },
-              { name: 'T. Thomas', role: 'Security', desc: 'The last line of defense in Eden City.', img: '/assets/thomas_portrait.png' }
+              { name: 'N', role: 'Specialist', desc: 'The silent observer of the protocol.', img: '/assets/n_portrait.jpg' },
+              { name: 'Kira', role: 'Lead Scientist', desc: 'The woman who unlocked the earth\'s voice.', img: '/assets/kira_portrait.jpg' },
+              { name: 'T. Thomas', role: 'Security', desc: 'The last line of defense in Eden City.', img: '/assets/thomas_portrait.jpg' }
             ].map((char, i) => (
               <motion.div 
                 key={char.name}
