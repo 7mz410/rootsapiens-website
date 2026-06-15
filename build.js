@@ -17,7 +17,8 @@ const filesToCopy = [
   'image-slot.js',
   'images',
   'screenshots',
-  'uploads'
+  'uploads',
+  'CNAME'
 ];
 
 filesToCopy.forEach(file => {
