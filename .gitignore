@@ -81,3 +81,8 @@ typings/
 
 # Build output
 dist/
+
+# Local temp/asset folders
+temp_zip/
+www.rootspaines.com.zip
+Comics/
