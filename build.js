@@ -18,6 +18,7 @@ const filesToCopy = [
   'images',
   'screenshots',
   'uploads',
+  'game',
   'CNAME'
 ];
 
