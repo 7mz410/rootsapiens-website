@@ -26,7 +26,7 @@ filesToCopy.forEach(file => {
   if (fs.existsSync(file)) {
     const stats = fs.statSync(file);
     if (stats.isDirectory()) {
-      fs.cpSync(file, path.join(dist, file), { recursive: true });
+      fs.cpSync(file, path.join(dist, file), { recursive: true, filter: src => !src.endsWith('.zip') });
       console.log(`Copied directory: ${file} -> dist/${file}`);
     } else {
       fs.copyFileSync(file, path.join(dist, file));
