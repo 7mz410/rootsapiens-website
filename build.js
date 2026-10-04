@@ -19,7 +19,8 @@ const filesToCopy = [
   'screenshots',
   'uploads',
   'game',
-  'CNAME'
+  'CNAME',
+  '_headers'
 ];
 
 filesToCopy.forEach(file => {
