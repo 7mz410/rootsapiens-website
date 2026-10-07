@@ -4,7 +4,7 @@ const urls = import.meta.glob('../../assets/*.{png,jpg,webp}', { eager: true, qu
 export type Img = HTMLImageElement | HTMLCanvasElement;
 
 /** Images for rooms after the opening farm. loadAll() starts the game without them and fetches them in the background. */
-const DEFERRED = /^(church_|barn_|village_|north_path|priest_|closeup_(annunciation|curtain|madonna|st_george))/;
+const DEFERRED = /^(church_|barn_|village_|north_path|mountain_|home_|priest_|mary_|luai_|bell_|raven|closeup_(annunciation|madonna|st_george))/;
 
 export class Assets {
   private images = new Map<string, Img>();
