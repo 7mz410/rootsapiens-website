@@ -2,7 +2,7 @@
 
 > هاد الملف أول شي بنقرأه بكل سشن جديدة. Claude Code بقرأه تلقائياً من جذر الريبو.
 > **حدّثه بآخر كل سشن فيها شغل حقيقي**: قسم "وين صرنا" وقسم "الخطوات الجاية" وسجل السشنات تحت.
-> آخر تحديث: 2026-10-07
+> آخر تحديث: 2026-10-10
 
 ---
 
@@ -62,6 +62,8 @@
 - **شكل الملفات اللي بيبعتها نديم بيتغير:**
   - zip مساراته بأسلوب Windows (`video\x.mp4`): فكّه بـ Python `zipfile` مع تبديل `\` بـ `/`.
   - ملف اسمه `.zip` وهو بالحقيقة **tar**: فكّه بـ `tar -xf`.
+  - نسخة 10-09 (حجمها 1GB) فيها `art_src` و`VIDEO_SOURCES`، وما بنحتاجهم. فك بس `ROOTSAPIENS-source/*` و`ROOTSAPIENS-Omega-Valley/*`.
+  - ⚠️ ممكن يكون فيها **أكثر من build**. بنسخة 10-09 كان `index.html` قديم، و`PLAY-rootsapiens.html` هو اللي بيطابق الـ source. قارن دايماً مع الـ build اللي بيطابق الـ source.
   - دايماً افحص بـ `file` الأول.
 - **الكود المصدر مش بهاد الريبو.** بيوصل كـ `game/ROOTSAPIENS-source.zip`، وهو مستثنى من git.
   - التعديلات تبعتنا على المصدر محفوظة بـ `game-source-patches/`:
@@ -97,6 +99,9 @@ node tests/e2e/slice.e2e.mjs                 # لازم 165/165
   CLOUDFLARE_API_KEY=… CLOUDFLARE_EMAIL=hamza.abu3ayash@gmail.com CLOUDFLARE_ACCOUNT_ID=… \
     npx -y wrangler@3 pages deploy dist --project-name=rootsapiens-website --branch=main --commit-dirty=true
   ```
+- **بيتا:** `https://beta.rootsapiens-website.pages.dev/game/`. هاد Cloudflare preview branch، وما بيأثر على rootsapiens.com.
+  - الطريقة: انسخ `dist/` تبع الموقع لفولدر مؤقت، وحط اللعبة الجديدة بـ `game/`، وانشر بـ `--branch=beta` بدل `main`.
+  - البيتا **مش بـ git**. بيتبنى من الـ zip بالـ scratchpad. لما يتوافق عليها، بنحطها بـ `game/` وبننشر على `main`.
 - بعد كل نشر لازم نفحص: `curl -sI https://rootsapiens.com/game/` بيرجع 200، والفيديوهات بترجع 200.
 - git push شغال عن طريق `gh` (حساب `7mz410`). رابط الـ remote نظيف وما فيه توكن.
 
@@ -113,6 +118,7 @@ node tests/e2e/slice.e2e.mjs                 # لازم 165/165
 | 2026-10-05 | تسريع التحميل: صار multi-file build، وتحميل على مراحل، وكاش للأبد. اختبار e2e نجح 165/165 |
 | 2026-10-05 | نسخة نديم الجديدة (الفصل 3 وفيديوهات webm). رجعت ملف واحد بدون source، فراح التسريع |
 | 2026-10-07 | نسخة الفصل 5 (البيت ومريم ولؤي)، وصلت مع الـ source. بنيناها مع الباتشات، فرجع التسريع |
+| 2026-10-10 | نسخة 10-09 (صوت وموسيقى، الكراج والميكانيكي، وغرف بيت جديدة) على **رابط بيتا** بس. الإنتاج لسا على نسخة 10-07 |
 
 ---
 
@@ -180,6 +186,7 @@ node tests/e2e/slice.e2e.mjs                 # لازم 165/165
 
 ## 9. سجل السشنات (أحدث فوق)
 
+- **2026-10-10**: `omegawithaudio_full_2026-10-09.zip` نزل على البيتا. `DEFERRED` صار فيه `roots_village|garage_|mechanic_|chair_`. e2e: بنائي ونسخة نديم `PLAY` نفس النتيجة بالزبط (99 نجحوا و5 فشلوا قبل `church_front`). الـ 5 سببهم إن الاختبار قديم: `halter` صار `rope` وعدد الحيوانات تغير. Playwright بالـ scratchpad بيستعمل headless shell نسخة 1243 عن طريق symlink لـ 1248.
 - **2026-10-07**: `omegagame7102026.zip` (طلع tar). طبقت الباتشات ووسعت `DEFERRED`. e2e: 104 نجحوا ووقف عند `church_front` لأن الاختبار قديم. فحص المتصفح والموقع الحي نظيف.
 - **2026-10-05 (2)**: رفع `ROOTSAPIENS-web.zip` من نديم: الفصل 3 و26 فيديو. جربته بالمتصفح، شغال وبدون أخطاء، وما في اختبار e2e لأنه ما في source. توكن GitHub ما استخدمناه لأن `gh` مسجّل دخول أصلاً.
 - **2026-10-05**: إنشاء هاد الملف. تسريع تحميل اللعبة: multi-file، وتحميل على مراحل، و`_headers`.
