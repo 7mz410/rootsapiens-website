@@ -4,3 +4,6 @@
 
 /game/video/*
   Cache-Control: public, max-age=604800
+
+/game/audio/*
+  Cache-Control: public, max-age=604800

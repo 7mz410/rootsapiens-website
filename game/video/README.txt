@@ -12,6 +12,10 @@ Already wired (skipped automatically until the file exists):
   outro.mp4   plays after the last village look, before the "End of vertical slice" card
   chapter1_end.mp4   plays when Joseph follows the hoofprints out of the pasture, before the North Path
   chapter2_end.mp4   plays when Joseph goes through the gap in the wall, before "End of Chapter 2"
+  church_enter.mp4   SHIPPED: unchanged copy of movie clip 055 (flight over the village down to the church
+              square). The first time Joseph goes through the church door only 0:00-0:06 plays
+              ("endAt": 6 in script.vs.church_door), then he is inside the church. church_enter.webm twin.
 
 Add more anywhere in a script:  { "do": "video", "file": "my_clip.mp4" }
+Play only the start of a clip:  { "do": "video", "file": "my_clip.mp4", "endAt": 6 }   (cut at 0:06)
 Animated room plate (muted loop, same framing as the painted plate): add "video": "farm1_loop.mp4" to that room layer.
