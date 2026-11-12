@@ -2,7 +2,7 @@
 
 > هاد الملف أول شي بنقرأه بكل سشن جديدة. Claude Code بقرأه تلقائياً من جذر الريبو.
 > **حدّثه بآخر كل سشن فيها شغل حقيقي**: قسم "وين صرنا" وقسم "الخطوات الجاية" وسجل السشنات تحت.
-> آخر تحديث: 2026-10-10
+> آخر تحديث: 2026-11-12
 
 ---
 
@@ -57,22 +57,22 @@
 - `package.json` فيه React و Vite و framer-motion، **بس الموقع ما بيستخدمهم بالبناء**. هاد دين تقني (انظر §6).
 
 ### اللعبة (`game/`)
-- `game/index.html` و`game/assets/`: مبنيين من source نديم تبع 2026-10-07 (`omegagame7102026.zip`)، مع الباتشات تبعتنا. multi-file، وبيحمّل 6.2MB عند البداية و5.3MB بالخلفية.
-- `game/video/`: 14 فيديو، كل واحد بنسختين mp4 و webm (≈123MB). الفيديوهات بتيجي من `public/video` بالـ source. أكبر ملف 20MB، وحد Cloudflare 25MB للملف.
+- `game/index.html` و`game/assets/`: مبنيين من source نديم تبع 2026-11-11 ("the game 3.1", `wetransfer_the-game-3-1_2026-11-11_0900.zip`)، مع الباتشات تبعتنا. multi-file وتحميل على مراحل. `game/audio/` فيه الصوت والدبلجة (25MB، كاش أسبوع).
+- `game/video/`: ≈286MB، بيتنسخ من `public/video` بالـ source (بـ `rsync --delete`). الفيديوهات بتيجي من `public/video` بالـ source. أكبر ملف 20MB، وحد Cloudflare 25MB للملف.
 - **شكل الملفات اللي بيبعتها نديم بيتغير:**
   - zip مساراته بأسلوب Windows (`video\x.mp4`): فكّه بـ Python `zipfile` مع تبديل `\` بـ `/`.
   - ملف اسمه `.zip` وهو بالحقيقة **tar**: فكّه بـ `tar -xf`.
   - نسخة 10-09 (حجمها 1GB) فيها `art_src` و`VIDEO_SOURCES`، وما بنحتاجهم. فك بس `ROOTSAPIENS-source/*` و`ROOTSAPIENS-Omega-Valley/*`.
   - ⚠️ ممكن يكون فيها **أكثر من build**. بنسخة 10-09 كان `index.html` قديم، و`PLAY-rootsapiens.html` هو اللي بيطابق الـ source. قارن دايماً مع الـ build اللي بيطابق الـ source.
   - دايماً افحص بـ `file` الأول.
-- **الكود المصدر مش بهاد الريبو.** بيوصل كـ `game/ROOTSAPIENS-source.zip`، وهو مستثنى من git.
+- **الكود المصدر مش بهاد الريبو.** بيوصل جوا zip نديم (فيه `src/` و`data/` و`tests/`، وكمان `node_modules` ويندوز و`dist` و`art_src` اللي ما بنحتاجهم). الـ zip مستثنى من git (`wetransfer_*.zip`).
   - التعديلات تبعتنا على المصدر محفوظة بـ `game-source-patches/`:
     - `vite.config.ts`: بناء multi-file بدل ملف واحد، مع `base: './'`.
     - `assets.ts`: تحميل على مراحل. صور المزرعة والشخصيات أول، وباقي الغرف بالخلفية.
   - ⚠️ إذا وصل source zip جديد، **لازم نطبق الباتشات قبل البناء**، وإلا التسريع بيروح.
 - الغرف (18): `farm1` و`barn_interior` و`village_square` و`north_path`، و`church_front|interior|side|altar|cupboard`، و`mountain_foot|hills|lane|ravine|trail`، و`home_front|kitchen|living|yard`.
 - ⚠️ لما تنضاف غرف أو شخصيات جديدة، **حدّث `DEFERRED` بـ `assets.ts`**. أي صورة بتنستخدم بـ `farm1` ما لازم تكون بالقائمة. مثلاً `closeup_curtain_f*` بتنستخدم بالمزرعة.
-- اختبار e2e (`tests/e2e/slice.e2e.mjs`) **قديم على نسخة 10-07**. بيوقف عند `church_front` لأنه بيستنى الدخول مباشرة على `church_interior`. آخر نتيجة: 104 فحص نجحوا، وصفر فشل قبل الوقفة. نديم لازم يحدثه.
+- اختبار e2e (`tests/e2e/slice.e2e.mjs`) بيشتغل على 3.1، بس لازم تعديلات لتشغيله على HTTP: غيّر `URL`، وكبّر مهلة انتظار الفيديو (افتتاح من 6 مقاطع) و`waitSpeech` لـ 120 ثانية. فحص `V0` قديم (بيستنى `prologue_climb` اللي انشال من الافتتاح)، فبيفشل دايماً.
 - الحفظ: `localStorage`، فيه 3 خانات و quick save (F5/F9). ما في حسابات ولا حفظ على الإنترنت.
 - أزرار التطوير: F1 للـ debug overlay، F2 لمحرر الغرف، Esc للقائمة أو التخطي.
 
@@ -83,7 +83,7 @@ cp <repo>/game-source-patches/vite.config.ts vite.config.ts
 cp <repo>/game-source-patches/assets.ts src/engine/assets.ts
 npm install --ignore-scripts
 npx tsc --noEmit && npx vite build          # الناتج بـ dist/
-# الـ e2e بدّه HTTP مش file:// (module scripts):
+# الـ e2e بدّه HTTP مش file:// (module scripts) و Chromium عادي (headless shell):
 #   حط الفيديوهات بـ dist/video/، شغّل python3 -m http.server 8766 من dist/،
 #   وغيّر URL بـ tests/e2e/slice.e2e.mjs لـ http://localhost:8766/index.html
 node tests/e2e/slice.e2e.mjs                 # لازم 165/165
@@ -92,7 +92,7 @@ node tests/e2e/slice.e2e.mjs                 # لازم 165/165
 
 ### النشر (Deploy)
 - الاستضافة: **Cloudflare Pages**، مشروع `rootsapiens-website`، على حساب حمزة (account `723a1d4f…`).
-- **النشر التلقائي من GitHub معطل حالياً.** الـ workflow `.github/workflows/deploy.yml` بيفشل بـ `Authentication error` لأن الـ secret `CLOUDFLARE_API_TOKEN` منتهي.
+- **النشر التلقائي من GitHub:** الـ secret `CLOUDFLARE_API_TOKEN` اتجدد 2026-11-09 بتوكن Pages، بس ما تأكدنا من الـ workflow بعد (انظر §7).
 - النشر اليدوي، والمفتاح بيعطيه حمزة وقتها وما بينحفظ:
   ```bash
   node build.js
@@ -118,7 +118,9 @@ node tests/e2e/slice.e2e.mjs                 # لازم 165/165
 | 2026-10-05 | تسريع التحميل: صار multi-file build، وتحميل على مراحل، وكاش للأبد. اختبار e2e نجح 165/165 |
 | 2026-10-05 | نسخة نديم الجديدة (الفصل 3 وفيديوهات webm). رجعت ملف واحد بدون source، فراح التسريع |
 | 2026-10-07 | نسخة الفصل 5 (البيت ومريم ولؤي)، وصلت مع الـ source. بنيناها مع الباتشات، فرجع التسريع |
-| 2026-10-10 | نسخة 10-09 (صوت وموسيقى، الكراج والميكانيكي، وغرف بيت جديدة) على **رابط بيتا** بس. الإنتاج لسا على نسخة 10-07 |
+| 2026-10-10 | نسخة 10-09 (صوت وموسيقى، الكراج والميكانيكي، وغرف بيت جديدة) على **رابط بيتا** بس |
+| 2026-11-09 | نسخة بدون source نزلت على الإنتاج (صور مستخرجة من الـ html) |
+| 2026-11-12 | نسخة 3.1 مع الـ source (14 غرفة، افتتاح جديد 6 مقاطع) مبنية بباتشاتنا ومنشورة على الإنتاج |
 
 ---
 
@@ -136,28 +138,26 @@ node tests/e2e/slice.e2e.mjs                 # لازم 165/165
 
 ## 6. ديون تقنية ومخاطر معروفة
 
-- 🔴 **Cloudflare Global API Key** انكتب بالشات يوم 2026-10-02 وما انعمله Roll. لازم يتغير، وبدله نعمل API Token بصلاحية Pages بس.
+- 🔴 **Cloudflare Global API Key** انكتب بالشات (2026-10-02 و2026-11-09) وما انعمله Roll. لازم يتغير. عملنا توكن بصلاحية Pages بس وحطيناه بسيكرت GitHub.
 - 🟡 نديم لسا بيبني ملف واحد (`viteSingleFile`). إحنا بنعيد البناء من الـ source اللي بيبعته، فلازم **دايماً يبعت الـ source مع النسخة**.
-- 🟡 اختبار e2e قديم على الغرف الجديدة (§3).
 - 🔴 **كود اللعبة المصدر مش بالريبو.** بيوصل zip، وتعديلاتنا عليه محفوظة كباتشات بس. الحل: نحطه بفولدر `game-src/` بالريبو ونخليه هو المرجع.
-- 🟡 النشر التلقائي معطل (انظر §3).
 - 🟡 `package.json` فيه dependencies مش مستخدمة (React و Vite و framer-motion و gh-pages)، و`vite.config.js` كمان مش مستخدم.
-- 🟡 ملفات قديمة وكبيرة بجذر الريبو: `Rootsapiens.html` (15MB)، و`www.rootspaines.com.zip`، و`temp_zip/`، و`ROOTSAPIENS-Omega-Valley*.zip`. بعضها مستثنى من git بس لسا مخربط الفولدر.
+- 🟡 `Comics/` (928MB) مستثنى من git وما سألنا حمزة عنه.
 - 🟡 `public/_redirects` (SPA fallback) ما بينسخ لـ `dist/` لأنه مش بـ `build.js`.
-- ⚪ فيديوهات `.webm` مش موجودة. المتصفحات اللي ما بتدعم H.264 ما رح تشغل الفيديو.
+- ⚪ مقاطع الافتتاح (`opening_*.mp4` والـ 4 مقاطع الأصلية) mp4 بس بدون webm.
 - ⚪ الحفظ محلي بس، وما في حسابات.
 
 ---
 
 ## 7. الخطوات الجاية (بالترتيب المقترح)
 
-1. **[حمزة]** يعمل Roll للـ Global Key، ويبعت **API Token** بصلاحية `Cloudflare Pages: Edit`.
-2. **[Claude]** يحط التوكن بـ GitHub Secrets، ويرجع النشر التلقائي يشتغل، ويضيف خطوة فحص بعد النشر.
-3. **[Claude]** يحط كود اللعبة المصدر بالريبو (`game-src/`) ويطبق الباتشات فيه، ويعمل `build.js` يبني اللعبة كمان. هيك بنتخلص من دورة الـ zip.
-4. **[Claude]** ينظف الريبو: يشيل الـ dependencies والملفات القديمة. **بيسأل حمزة قبل ما يحذف أي إشي.**
-5. **[حمزة ونديم]** الفيديوهات الناقصة (outro و chapter1_end و chapter2_end)، وفن Level 3 (FARM_04_MOUNTAIN_FOOT).
+1. **[حمزة]** يعمل Roll للـ Global Key (انكتب بالشات مرتين).
+2. **[Claude]** يتأكد إنه النشر التلقائي بيشتغل بعد push، ويضيف خطوة فحص بعد النشر.
+3. **[Claude]** يحط كود اللعبة المصدر بالريبو (`game-src/`) ويطبق الباتشات فيه، ويخلي `build.js` يبني اللعبة كمان. هيك بنتخلص من دورة الـ zip.
+4. **[Claude]** يشيل dependencies الموقع الغير مستخدمة من `package.json` (الموقع بيبني بـ `build.js` بس).
+5. **[حمزة ونديم]** الفيديوهات الناقصة (outro و chapter2_end)، وفن Level 3.
 6. **[Claude]** يبني Level 3 لما يوصل الفن، حسب `LEVEL3_BRIEF.md`.
-7. **[قرار حمزة]** حسابات وحفظ على الإنترنت: Supabase أو Cloudflare D1. منأجله لحد ما تكبر اللعبة.
+7. **[قرار حمزة]** حسابات وحفظ على الإنترنت: Supabase أو Cloudflare D1.
 
 ---
 
@@ -186,7 +186,9 @@ node tests/e2e/slice.e2e.mjs                 # لازم 165/165
 
 ## 9. سجل السشنات (أحدث فوق)
 
-- **2026-11-09**: `root-game-new.zip` (فيه `audio/` صوت ودبلجة، و`video/`). الـ `index.html` فيه 81MB بناء ملف واحد بدون source، فاستخرجت 160 صورة base64 لـ `game/assets/` (أسماء sha1، كاش للأبد) وصار الـ html 635KB. تحميل محلي نظيف: صفر أخطاء وصفر 404، وشاشة العنوان طلعت. ما في e2e لأنه ما في source. النشر ينتظر مفتاح Cloudflare من حمزة. فرع `game-nov9-build`. ⚠️ التسريع على مراحل (`DEFERRED`) مش موجود بهاي النسخة لأنها بدون source.
+- **2026-11-12**: `wetransfer_the-game-3-1_2026-11-11_0900.zip` ("the game 3.1"، فيه الـ source). طبقت الباتشات، `tsc` و`vitest` 90/90 نجحوا، البناء multi-file، ما في ملف فوق 24MB. e2e على HTTP: انظر نتيجته بالتفاصيل تحت. نشرت على الإنتاج. حذفت الـ zips القديمة (`game/*.zip` وجذر الريبو) و`temp_zip/` و`ROOTSAPIENS-Omega-Valley/` و`Rootsapiens.html` و`Rootsapiens-standalone-src.dc.html` و`vite.config.js`. `Comics/` والـ dependencies ما لمستهم.
+
+- **2026-11-09**: `root-game-new.zip` (فيه `audio/` صوت ودبلجة، و`video/`). الـ `index.html` فيه 81MB بناء ملف واحد بدون source، فاستخرجت 160 صورة base64 لـ `game/assets/` (أسماء sha1، كاش للأبد) وصار الـ html 635KB. تحميل محلي نظيف: صفر أخطاء وصفر 404، وشاشة العنوان طلعت. ما في e2e لأنه ما في source. نُشرت على الإنتاج. ⚠️ التسريع على مراحل (`DEFERRED`) مش موجود بهاي النسخة لأنها بدون source.
 
 - **2026-10-10**: `omegawithaudio_full_2026-10-09.zip` نزل على البيتا. `DEFERRED` صار فيه `roots_village|garage_|mechanic_|chair_`. e2e: بنائي ونسخة نديم `PLAY` نفس النتيجة بالزبط (99 نجحوا و5 فشلوا قبل `church_front`). الـ 5 سببهم إن الاختبار قديم: `halter` صار `rope` وعدد الحيوانات تغير. Playwright بالـ scratchpad بيستعمل headless shell نسخة 1243 عن طريق symlink لـ 1248.
 - **2026-10-07**: `omegagame7102026.zip` (طلع tar). طبقت الباتشات ووسعت `DEFERRED`. e2e: 104 نجحوا ووقف عند `church_front` لأن الاختبار قديم. فحص المتصفح والموقع الحي نظيف.
